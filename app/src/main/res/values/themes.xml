@@ -1,0 +1,22 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme. -->
+    <style name="Base.Theme.DispositivosTest" parent="Theme.Material3.DayNight.NoActionBar">
+        <!-- Customize your light theme here. -->
+        <item name="colorPrimary">@color/fuccia</item>
+        <item name="colorSecondary">@color/morado</item>
+    </style>
+
+    <style name="Theme.DispositivosTest" parent="Base.Theme.DispositivosTest" />
+
+    <style name="buttonTheme">
+        <item name="backgroundTint">@color/morado</item>
+        <item name="android:layout_gravity">center</item>
+        <item name="android:text">@string/txt_ingresar_btn</item>
+
+    </style>
+    <style name="editTextTheme">
+
+    </style>
+
+
+</resources>
