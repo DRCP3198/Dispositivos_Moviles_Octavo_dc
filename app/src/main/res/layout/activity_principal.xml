@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/verde"
+    android:orientation="vertical"
+
+    tools:context=".ui.activities.PrincipalActivity">
+
+    <FrameLayout
+        android:id="@+id/frm_container"
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:layout_marginBottom="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/bottom_navigation"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+    </FrameLayout>
+
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottom_navigation"
+        android:layout_width="match_parent"
+        android:layout_height="79dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:menu="@menu/navigation_menu_bar" />
+
+    <TextView
+        android:id="@+id/textUser"
+        android:layout_width="match_parent"
+        android:layout_height="91dp"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:text="BIENVENIDO!!!"
+        android:textColor="#FFEB3B"
+        android:textSize="55sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/frm_container"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <!--    <FrameLayout
+            android:id="@+id/frm_container1"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />-->
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    <!-- <TextView
+         android:layout_width="match_parent"
+         android:layout_height="wrap_content"
+         android:layout_gravity="center"
+         android:gravity="center"
+         android:textSize="@dimen/tamanio_normal"
+         android:textColor="#033FF4"
+         android:textStyle="bold"
+         android:layout_margin="60dp"
+         android:text="Es bueno verte de nuevo!!!" />
+
+     <TextView
+         android:id="@+id/txtUserName"
+         android:layout_width="384dp"
+         android:layout_height="129dp"
+         android:layout_gravity="center"
+         android:gravity="center"
+         android:textColor="#BF2323"
+         android:textSize="50sp"
+         android:textStyle="bold"
+         tools:text="Bienvenido" />
+
+     <TextView
+         android:id="@+id/txtAPELLIDO"
+         android:layout_width="316dp"
+         android:layout_height="137dp"
+         android:layout_gravity="center"
+         android:gravity="center"
+         android:textColor="#BF2323"
+         android:textSize="50sp"
+         android:textStyle="bold"
+         tools:text="Bienvenido" />-->
