@@ -1,6 +1,7 @@
 package com.examenp.dillan.dispositivosm_recyclewie_dc.ui.activities
 
 import android.app.Activity
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -10,15 +11,17 @@ import com.examenp.dillan.dispositivosm_recyclewie_dc.R
 import com.examenp.dillan.dispositivosm_recyclewie_dc.data.entities.Users
 import com.examenp.dillan.dispositivosm_recyclewie_dc.databinding.ActivityMainBinding
 import com.examenp.dillan.dispositivosm_recyclewie_dc.ui.adapters.UsersAdapter
+import com.google.android.material.snackbar.Snackbar
 
 class MainActivity : AppCompatActivity() {
 
 
     private var userList: MutableList<Users> = ArrayList<Users>()
-    
-    private var count:Int=1
+
+    //Para que se note los camnios agrego una variable count
+    private var count: Int = 1
     private lateinit var binding: ActivityMainBinding
-    private var usersAdapter = UsersAdapter()
+    private var usersAdapter = UsersAdapter({deleteUser(it)},{selectUser(it)})
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,26 +34,52 @@ class MainActivity : AppCompatActivity() {
 
     fun initRecycleView() {
         binding.rvUsers.adapter = usersAdapter
-        binding.rvUsers.layoutManager = LinearLayoutManager(
-            this,
-            LinearLayoutManager.VERTICAL, false
-        )
+        binding.rvUsers.layoutManager =
+            LinearLayoutManager(
+                this,
+                LinearLayoutManager.VERTICAL,
+                false
+            )
 
     }
 
     fun initListeners() {
-        binding.btnListener.setOnClickListener {
+        binding.btnInsert.setOnClickListener {
             val usuarios = Users(
                 1,
-                "Dillan",
-                "Estudiante",
-                "https://www.google.com/search?sca_esv=b1246719c6e8d448&rlz=1C1VDKB_esEC1083EC1083&sxsrf=ACQVn088Y-nUmnSZ8k8RdJ05Fme0ZkZOPw:1705757571748&q=imagen+estudiante&tbm=isch&source=lnms&sa=X&ved=2ahUKEwjR-IuRiuyDAxWsRTABHXE2D5sQ0pQJegQIDBAB&biw=1707&bih=811&dpr=1.13#imgrc=cIwiQ2DmZXRWXM"
+                "Bayron $count",
+                "Su profe",
+                "https://static.vecteezy.com/system/resources/previews/022/149/526/non_2x/closeup-of-male-teacher-with-beard-glasses-books-and-apple-vector.jpg"
             )
-
-            userList.add(usuarios)
-            Log.d("List", userList.toString())
-            usersAdapter.listUsers= userList
-            usersAdapter.notifyDataSetChanged()
+            count++
+            insertUsers(usuarios)
         }
+
+    }
+
+    private fun insertUsers(usuarios: Users) {
+        userList.add(usuarios)
+        usersAdapter.listUsers = userList
+        usersAdapter.notifyItemInserted(userList.size)
+    }
+
+    private fun deleteUser(position: Int){
+        userList.removeAt(position)
+        usersAdapter.listUsers=userList
+        usersAdapter.notifyItemRemoved(position)
+
+    }
+
+    //Me muestra el usuario seleccionado
+    private fun selectUser(user: Users){
+        Snackbar.make(this,
+            binding.btnInsert,
+            user.name, Snackbar.LENGTH_LONG)
+            .show()
+        //Si esta info quiero mandar en otra activity debo usarl los Intents
+
+//        val i= Intent(this, llegada)//Nececito un punto de partida y uno de llegada "Un activity"
+//        i.putExtra("Usuario id", user.id)
+//        startActivity(i)
     }
 }
