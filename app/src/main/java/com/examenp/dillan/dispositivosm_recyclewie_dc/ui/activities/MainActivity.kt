@@ -5,26 +5,33 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.widget.LinearLayout
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.examenp.dillan.dispositivosm_recyclewie_dc.R
-import com.examenp.dillan.dispositivosm_recyclewie_dc.data.entities.Users
+import com.examenp.dillan.dispositivosm_recyclewie_dc.data.network.entities.topanime.TopAnimes
+
 import com.examenp.dillan.dispositivosm_recyclewie_dc.databinding.ActivityMainBinding
+import com.examenp.dillan.dispositivosm_recyclewie_dc.logic.entities.FullInfoAnimeLG
+import com.examenp.dillan.dispositivosm_recyclewie_dc.logic.usercase.JikanGetTopAnimesUserCaseNuevo
 import com.examenp.dillan.dispositivosm_recyclewie_dc.ui.adapters.UsersAdapter
 import com.examenp.dillan.dispositivosm_recyclewie_dc.ui.adapters.UsersAdapterDiffUtil
 import com.google.android.material.snackbar.Snackbar
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class MainActivity : AppCompatActivity() {
 
 
-    private var userList: MutableList<Users> = ArrayList<Users>()
+    private var userList: MutableList<FullInfoAnimeLG> = ArrayList()
 
-    //Para que se note los camnios agrego una variable count
-    private var count: Int = 1
     private lateinit var binding: ActivityMainBinding
-    private var usersAdapter = UsersAdapter({deleteUser(it)},{selectUser(it)})
+
     //Me creo otro adaptador para el diffUtil
-    private var userDiffAdapter= UsersAdapterDiffUtil({deleteUserDiffUtil(it)},{selectUser(it)})
+    private var userDiffAdapter =
+        UsersAdapterDiffUtil({ deleteUserDiffUtil(it) }, { selectAnime(it) })
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,65 +39,67 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         initRecycleView()
-        initListeners()
+
     }
 
     fun initRecycleView() {
-        binding.rvUsers.adapter =userDiffAdapter
+        binding.rvUsers.adapter = userDiffAdapter
         binding.rvUsers.layoutManager =
             LinearLayoutManager(
                 this,
                 LinearLayoutManager.VERTICAL,
                 false
             )
-
+        loadDataRecycleView()
     }
 
-    fun initListeners() {
-        binding.btnInsert.setOnClickListener {
-            val usuarios = Users(
-                1,
-                "Bayron $count",
-                "Su profe",
-                "https://static.vecteezy.com/system/resources/previews/022/149/526/non_2x/closeup-of-male-teacher-with-beard-glasses-books-and-apple-vector.jpg"
-            )
-            count++
-            //insertUsers(usuarios)
-            insertUsersDiffUtil(usuarios)
+    //Carga de Informacion Recycle View
+    private fun loadDataRecycleView(){
+        //TODO("Llamar a la API de Jikan")
+        lifecycleScope.launch(Dispatchers.Main) {
+            binding.progresBar.visibility = View.VISIBLE
+            //Hago el llamado intermedio entre dos estados, el llamado a mi logica a la base de datos
+            //se hace dentro de una IO
+            val respuesta = withContext(Dispatchers.IO) {
+                JikanGetTopAnimesUserCaseNuevo().invoke()
+            }
+            respuesta.onSuccess { listAnime ->
+                userList.addAll(listAnime)
+                //Cuando inicio el Recycle view es cuando debo poner la insercion
+                insertUsersDiffUtil(userList)
+            }
+            respuesta.onFailure { exeption ->
+                Snackbar.make(
+                    this@MainActivity,
+                    binding.rvUsers,
+                    exeption.message.toString(),
+                    Snackbar.LENGTH_LONG
+                ).show()
+
+            }
+            binding.progresBar.visibility = View.GONE
         }
 
     }
 
-    private fun insertUsersDiffUtil(usuarios: Users) {
-        userList.add(usuarios)
+    private fun insertUsersDiffUtil(animes: List<FullInfoAnimeLG>) {
+        userList.addAll(animes)
         userDiffAdapter.submitList(userList.toList())
-
-
-    }
-    private fun insertUsers(usuarios: Users) {
-        userList.add(usuarios)
-        usersAdapter.listUsers = userList
-        usersAdapter.notifyItemInserted(userList.size)
     }
 
-    private fun deleteUser(position: Int){
-        userList.removeAt(position)
-        usersAdapter.listUsers=userList
-        usersAdapter.notifyItemRemoved(position)
-
-    }
-
-    private fun deleteUserDiffUtil(position: Int){
+    private fun deleteUserDiffUtil(position: Int) {
         userList.removeAt(position)
         userDiffAdapter.submitList(userList.toList())
 
     }
 
     //Me muestra el usuario seleccionado
-    private fun selectUser(user: Users){
-        Snackbar.make(this,
-            binding.btnInsert,
-            user.name, Snackbar.LENGTH_LONG)
+    private fun selectAnime(animes: FullInfoAnimeLG) {
+        Snackbar.make(
+            this,
+            binding.rvUsers,
+            animes.name, Snackbar.LENGTH_LONG
+        )
             .show()
         //Si esta info quiero mandar en otra activity debo usarl los Intents
 

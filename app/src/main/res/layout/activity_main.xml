@@ -6,24 +6,22 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".ui.activities.MainActivity"
-    android:background="@color/verde">
+    android:background="@color/verde"
+    android:layout_margin="12dp">
 
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:gravity="center">
-
-        <Button
-            android:id="@+id/btnInsert"
-            android:layout_width="150dp"
-            android:layout_height="match_parent"
-            android:text="Insertar"></Button>
-    </LinearLayout>
-
+<com.google.android.material.progressindicator.LinearProgressIndicator
+    android:id="@+id/progresBar"
+    android:layout_width="match_parent"
+    android:layout_height="15dp"
+    android:layout_marginTop="5dp"
+    android:layout_marginBottom="5dp"
+    android:indeterminate="true"
+    android:visibility="invisible"/>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvUsers"
+        android:layout_marginTop="10dp"
+        tools:listitem="@layout/users_items"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
