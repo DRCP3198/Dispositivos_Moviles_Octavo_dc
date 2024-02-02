@@ -27,7 +27,7 @@ class UsersAdapterDiffUtil(
             onSelectItem: (FullInfoAnimeLG) -> Unit
         ) {
             binding.UserName.text = item.name
-            binding.UserDesc.text = item.sypnasis
+            binding.UserDesc.text = item.sypnosis
             binding.imgUser.load(item.big_image)
             binding.btnBorrar.setOnClickListener {
                 OnDeleteItem(adapterPosition)
