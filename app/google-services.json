@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "331745138115",
+    "project_id": "biometricapplication-810ce",
+    "storage_bucket": "biometricapplication-810ce.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:331745138115:android:cc2c9585bb2b69964ad976",
+        "android_client_info": {
+          "package_name": "com.biometric.dc"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBheCI_AESYCuayA0uHQSQYINmW1Gqw3S0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
